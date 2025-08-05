@@ -1,25 +1,42 @@
+using ComplytekTest.API.Application;
+using ComplytekTest.API.Application.Mapping;
+using ComplytekTest.API.Application.Mapping.Dep;
+using ComplytekTest.API.Extensions;
+using ComplytekTest.API.Infrastructure;
 using ComplytekTest.API.Infrastructure.Persistance;
 using ComplytekTest.API.Infrastructure.Seed;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.ConfigureSerilog();
 
 builder.Services.AddDbContext<ComplytekTestDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("ComplytekTestConnection")
     )
 );
+builder.Services.AddApplicationServices();
 
+builder.Services.AddInfrastructureServices();
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+
+    options.ApiVersionReader = new UrlSegmentApiVersionReader(); 
+});
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -37,11 +54,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 
