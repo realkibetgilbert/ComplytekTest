@@ -13,25 +13,23 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
         {
             _complytekTestDbContext = complytekTestDbContext;
         }
-        public async Task<Employee> AddAsync(Employee employee)
+        public async Task<Employee> CreateAsync(Employee employee)
         {
             await _complytekTestDbContext.Employees.AddAsync(employee);
             await _complytekTestDbContext.SaveChangesAsync();
             return employee;
         }
 
-        public async Task<bool> DeleteAsync(long id)
+        public async Task<Employee?> DeleteAsync(long id)
         {
             var employee = await _complytekTestDbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
 
-            if (employee == null)
-            {
-                return false;
-            }
+            if (employee == null) return null;
 
             _complytekTestDbContext.Employees.Remove(employee);
             await _complytekTestDbContext.SaveChangesAsync();
-            return true;
+
+            return employee;
         }
 
         public async Task<IEnumerable<Employee>> GetAllAsync()
@@ -42,15 +40,6 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
             .ThenInclude(ep => ep.Project)
             .AsNoTracking()
             .ToListAsync();
-        }
-
-        public async Task<Employee?> GetByEmailAsync(string email)
-        {
-            return await _complytekTestDbContext.Employees
-             .Include(e => e.Department)
-             .Include(e => e.EmployeeProjects)
-             .ThenInclude(ep => ep.Project)
-             .FirstOrDefaultAsync(e => e.Email == email);
         }
 
         public async Task<Employee?> GetByIdAsync(long id)

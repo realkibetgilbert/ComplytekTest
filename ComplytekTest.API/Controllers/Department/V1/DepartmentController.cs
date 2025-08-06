@@ -74,7 +74,7 @@ namespace ComplytekTest.API.Controllers.Department.V1
 
 
         [HttpDelete("{id:long}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async Task<IActionResult> DeleteDepartmentAsync(long id)
         {
             var response = await _departmentService.DeleteAsync(id);
 

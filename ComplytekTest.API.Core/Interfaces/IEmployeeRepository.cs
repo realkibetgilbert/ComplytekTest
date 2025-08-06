@@ -6,10 +6,9 @@ namespace ComplytekTest.API.Core.Interfaces
     {
         Task<IEnumerable<Employee>> GetAllAsync();
         Task<Employee?> GetByIdAsync(long id);
-        Task<Employee> AddAsync(Employee employee);
-        Task<Employee?> GetByEmailAsync(string email);
+        Task<Employee> CreateAsync(Employee employee);
         Task<Employee> UpdateAsync(Employee employee);
-        Task<bool> DeleteAsync(long id);
+        Task<Employee?> DeleteAsync(long id);
         Task<IEnumerable<Employee>> GetEmployeesByDepartmentAsync(long departmentId);
         Task<IEnumerable<Employee>> GetEmployeesByProjectAsync(long projectId);
     }

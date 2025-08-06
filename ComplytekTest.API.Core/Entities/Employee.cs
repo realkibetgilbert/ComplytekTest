@@ -6,10 +6,10 @@ namespace ComplytekTest.API.Core.Entities
     {
         public long Id { get; set; }
         [Required]
-        [StringLength(50, MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 3)]
         public required string FirstName { get; set; }
         [Required]
-        [StringLength(50, MinimumLength = 2)]
+        [StringLength(50, MinimumLength = 3)]
         public required string LastName { get; set; }
         [Required]
         [EmailAddress]

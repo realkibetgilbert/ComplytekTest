@@ -48,7 +48,7 @@ namespace ComplytekTest.API.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("ComplytekTest.API.Core.Entities.Employee", b =>
@@ -91,7 +91,7 @@ namespace ComplytekTest.API.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("ComplytekTest.API.Core.Entities.EmployeeProject", b =>
@@ -114,7 +114,7 @@ namespace ComplytekTest.API.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("EmployeeProjects");
+                    b.ToTable("EmployeeProjects", (string)null);
                 });
 
             modelBuilder.Entity("ComplytekTest.API.Core.Entities.Project", b =>
@@ -152,7 +152,7 @@ namespace ComplytekTest.API.Infrastructure.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("ComplytekTest.API.Core.Entities.Employee", b =>

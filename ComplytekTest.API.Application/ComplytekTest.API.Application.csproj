@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Employee\" />
     <Folder Include="DTOs\Project\" />
-    <Folder Include="Mapping\Emp\Interfaces\" />
-    <Folder Include="Mapping\Emp\Services\" />
     <Folder Include="Mapping\Proj\Interfaces\" />
     <Folder Include="Mapping\Proj\Services\" />
   </ItemGroup>
