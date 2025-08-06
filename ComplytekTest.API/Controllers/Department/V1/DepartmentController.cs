@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ComplytekTest.API.Controllers.Department.V1
 {
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiController]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -17,6 +17,11 @@ namespace ComplytekTest.API.Controllers.Department.V1
             _departmentService = departmentService;
         }
 
+        /// <summary>
+        /// Creates a new department.
+        /// </summary>
+        /// <param name="departmentToCreateDto">Department data to create.</param>
+        /// <returns>API response with created department info.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateDepartmentAsync([FromBody] DepartmentToCreateDto departmentToCreateDto)
         {
@@ -30,7 +35,10 @@ namespace ComplytekTest.API.Controllers.Department.V1
             };
         }
 
-
+        /// <summary>
+        /// Gets all departments.
+        /// </summary>
+        /// <returns>API response with list of departments.</returns>
         [HttpGet]
         public async Task<IActionResult> GetDepartmentsAsync()
         {
@@ -44,6 +52,11 @@ namespace ComplytekTest.API.Controllers.Department.V1
             };
         }
 
+        /// <summary>
+        /// Gets a department by ID.
+        /// </summary>
+        /// <param name="id">Department ID.</param>
+        /// <returns>API response with department info.</returns>
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetDepartmentByIdAsync(long id)
         {
@@ -57,6 +70,12 @@ namespace ComplytekTest.API.Controllers.Department.V1
             };
         }
 
+        /// <summary>
+        /// Updates a department by ID.
+        /// </summary>
+        /// <param name="id">Department ID.</param>
+        /// <param name="dto">Department data to update.</param>
+        /// <returns>API response with updated department info.</returns>
         [HttpPut("{id:long}")]
         public async Task<IActionResult> UpdateDepartmentAsync(long id, [FromBody] DepartmentToUpdateDto dto)
         {
@@ -72,7 +91,11 @@ namespace ComplytekTest.API.Controllers.Department.V1
             };
         }
 
-
+        /// <summary>
+        /// Deletes a department by ID.
+        /// </summary>
+        /// <param name="id">Department ID.</param>
+        /// <returns>API response indicating result.</returns>
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeleteDepartmentAsync(long id)
         {
@@ -85,6 +108,12 @@ namespace ComplytekTest.API.Controllers.Department.V1
                 _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
+
+        /// <summary>
+        /// Gets the total project budget for a department.
+        /// </summary>
+        /// <param name="departmentId">Department ID.</param>
+        /// <returns>API response with total project budget.</returns>
         [HttpGet("{departmentId:long}/total-project-budget")]
         public async Task<IActionResult> GetTotalProjectBudgetAsync(long departmentId)
         {

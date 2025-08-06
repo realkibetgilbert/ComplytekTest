@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ComplytekTest.API.Controllers.Employee.V1
 {
-    [ApiController]
+    
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiController]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -17,6 +18,11 @@ namespace ComplytekTest.API.Controllers.Employee.V1
             _employeeService = employeeService;
         }
 
+        /// <summary>
+        /// Creates a new employee.
+        /// </summary>
+        /// <param name="employeeToCreateDto">Employee data to create.</param>
+        /// <returns>API response with created employee info.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeAsync([FromBody] EmployeeToCreateDto employeeToCreateDto)
         {
@@ -30,6 +36,10 @@ namespace ComplytekTest.API.Controllers.Employee.V1
             };
         }
 
+        /// <summary>
+        /// Gets all employees.
+        /// </summary>
+        /// <returns>API response with list of employees.</returns>
         [HttpGet]
         public async Task<IActionResult> GetEmployeesAsync()
         {
@@ -43,6 +53,11 @@ namespace ComplytekTest.API.Controllers.Employee.V1
             };
         }
 
+        /// <summary>
+        /// Gets an employee by ID.
+        /// </summary>
+        /// <param name="id">Employee ID.</param>
+        /// <returns>API response with employee info.</returns>
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetEmployeeByIdAsync(long id)
         {
@@ -56,6 +71,12 @@ namespace ComplytekTest.API.Controllers.Employee.V1
             };
         }
 
+        /// <summary>
+        /// Updates an employee by ID.
+        /// </summary>
+        /// <param name="id">Employee ID.</param>
+        /// <param name="dto">Employee data to update.</param>
+        /// <returns>API response with updated employee info.</returns>
         [HttpPut("{id:long}")]
         public async Task<IActionResult> UpdateEmployeeAsync(long id, [FromBody] EmployeeToUpdateDto dto)
         {
@@ -72,6 +93,11 @@ namespace ComplytekTest.API.Controllers.Employee.V1
         }
 
 
+        /// <summary>
+        /// Deletes an employee by ID.
+        /// </summary>
+        /// <param name="id">Employee ID.</param>
+        /// <returns>API response indicating result.</returns>
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeleteEmployeeAsync(long id)
         {
