@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: complytektest-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Technology###324"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/1433'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - complytektest-network
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: complytektest-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Data Source=sqlserver,1433;Initial Catalog=ComplytekTestDb;User ID=sa;Password=Technology###324;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true"
+      RandomStringApiUrl: "https://codito.io/free-random-code-generator/api/generate"
+    ports:
+      - "5192:8080"
+    depends_on:
+      - sqlserver
+    networks:
+      - complytektest-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+
+networks:
+  complytektest-network:
+    driver: bridge

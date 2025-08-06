@@ -1,4 +1,4 @@
-using ComplytekTest.API.Application;
+﻿using ComplytekTest.API.Application;
 using ComplytekTest.API.Extensions;
 using ComplytekTest.API.Infrastructure;
 using ComplytekTest.API.Infrastructure.Persistance;
@@ -21,18 +21,28 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "Complytek Test API",
-        Description = "This API Provides Endpoints For Project Management",
-    });
+        Title = "ComplytekTest  API",
+        Description = """
+            This RESTful API allows management of employees, departments, and projects in a company.
 
-    // Enable XML comments if available
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-    {
-        options.IncludeXmlComments(xmlPath);
-    }
+             CRUD operations for:
+            - Employees
+            - Departments
+            - Projects
+
+             Project-specific features:
+            - Assign or remove employees from projects with roles
+            - View all projects assigned to an employee
+            - View total budget of projects handled by a department
+
+             Project creation includes unique project code generation via an external Random Code Generator API.
+            This process ensures transactional consistency by using database transactions.
+
+             Built with .NET 9 and SQL Server (EF Core code-first), deployable with Docker Compose.
+        """
+    });
 });
+
 
 builder.Services.AddDbContext<ComplytekTestDbContext>(options =>
     options.UseSqlServer(
@@ -59,28 +69,48 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Complytek Test API v1");
-    c.RoutePrefix = string.Empty;
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Complytek Company Management API v1");
+    c.DocumentTitle = "ComplytekTest API Documentation";
+    c.RoutePrefix = string.Empty; 
 });
-
-
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var context = services.GetRequiredService<ComplytekTestDbContext>();
 
-    try
+    const int maxRetries = 15;
+    var delay = TimeSpan.FromSeconds(5);
+
+    for (int attempt = 1; attempt <= maxRetries; attempt++)
     {
-        var context = services.GetRequiredService<ComplytekTestDbContext>();
-        await context.Database.MigrateAsync();
-        await DatabaseSeeder.SeedAsync(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred during database seeding.");
+        try
+        {
+            logger.LogInformation(" Attempting to migrate and seed database. Attempt {Attempt}/{MaxRetries}", attempt, maxRetries);
+
+            await context.Database.MigrateAsync();
+            await DatabaseSeeder.SeedAsync(context);
+
+            logger.LogInformation(" Database migration and seeding completed.");
+            break;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, " Database migration/seeding failed on attempt {Attempt}/{MaxRetries}", attempt, maxRetries);
+
+            if (attempt == maxRetries)
+            {
+                logger.LogCritical(" Maximum retry attempts reached. Unable to migrate/seed database.");
+                throw;
+            }
+
+            await Task.Delay(delay);
+            delay *= 2; 
+        }
     }
 }
+
 
 app.UseHttpsRedirection();
 
