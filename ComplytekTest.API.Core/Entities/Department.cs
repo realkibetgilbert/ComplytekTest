@@ -1,11 +1,15 @@
-﻿namespace ComplytekTest.API.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ComplytekTest.API.Core.Entities
 {
     public class Department
     {
         public long Id { get; set; }
-        
+        [Required]
+        [StringLength(50, MinimumLength = 3)]
         public required string Name { get; set; }
-
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
         public required string OfficeLocation { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;

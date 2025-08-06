@@ -10,10 +10,6 @@ namespace ComplytekTest.API.Infrastructure.ModelConfigurations
         {
             builder.HasKey(d => d.Id);
 
-            builder.Property(d => d.Name).IsRequired();
-
-            builder.Property(d => d.OfficeLocation).IsRequired();
-
             builder.HasMany(d => d.Employees)
                 .WithOne(e => e.Department)
                 .HasForeignKey(e => e.DepartmentId)

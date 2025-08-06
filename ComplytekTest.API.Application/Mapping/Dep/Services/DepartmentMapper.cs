@@ -22,5 +22,15 @@ namespace ComplytekTest.API.Application.Mapping.Dep.Services
         {
             return _mapper.Map<DepartmentToDisplayDto>(department);
         }
+
+        public List<DepartmentToDisplayDto> ToDisplay(IEnumerable<Department> departments)
+        {
+            return _mapper.Map<List<DepartmentToDisplayDto>>(departments);
+
+        }
+        public Department ToDomain(DepartmentToUpdateDto departmentToUpdateDto)
+        {
+            return _mapper.Map<Department>(departmentToUpdateDto);
+        }
     }
 }

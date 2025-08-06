@@ -7,5 +7,7 @@ namespace ComplytekTest.API.Application.Mapping.Dep.Interfaces
     {
         Department ToDomain(DepartmentToCreateDto departmentToCreateDto);
         DepartmentToDisplayDto ToDisplay(Department department);
+        List<DepartmentToDisplayDto> ToDisplay(IEnumerable<Department> departments);
+        Department ToDomain(DepartmentToUpdateDto departmentToUpdateDto);
     }
 }

@@ -6,7 +6,8 @@
         public required string Title { get; set; }
         public required string Message { get; set; }
         public T? Data { get; set; }
-
+        public string[]? Errors { get; set; }
+        public ApiErrorCode ErrorCode { get; set; }
         public static ApiResponse<T> Success(T data)
         {
             return new ApiResponse<T>
@@ -18,15 +19,22 @@
             };
         }
 
-        public static ApiResponse<T> Failure()
+        public static ApiResponse<T> Failure(
+         string? message = null,
+         string? title = null,
+         string[]? errors = null,
+         ApiErrorCode errorCode = ApiErrorCode.ServerError)
         {
             return new ApiResponse<T>
             {
                 IsSuccess = false,
-                Title = "Fail",
-                Message = "Request Failed",
-                Data = default
+                Title = title ?? "Fail",
+                Message = message ?? "Request failed.",
+                Errors = errors,
+                Data = default,
+                ErrorCode = errorCode
             };
         }
+
     }
 }

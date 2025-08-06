@@ -56,7 +56,7 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
                 .SumAsync(p => p.Budget);
         }
 
-        public async Task<Department> UpdateAsync(Department department)
+        public async Task<Department?> UpdateAsync(Department department)
         {
             var departmentToUpdate = await _compltekTestDbContext.Departments.FirstOrDefaultAsync(d => d.Id == department.Id);
 

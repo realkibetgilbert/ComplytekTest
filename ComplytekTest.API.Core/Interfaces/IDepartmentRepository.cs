@@ -7,7 +7,7 @@ namespace ComplytekTest.API.Core.Interfaces
         Task<IEnumerable<Department>> GetAllAsync();
         Task<Department?> GetByIdAsync(long id);
         Task<Department> CreateAsync(Department department);
-        Task<Department> UpdateAsync(Department department);
+        Task<Department?> UpdateAsync(Department department);
         Task<Department?> DeleteAsync(long id);
         Task<decimal> GetTotalProjectBudgetAsync(long departmentId);
     }

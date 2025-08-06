@@ -10,6 +10,7 @@ namespace ComplytekTest.API.Application.Mapping.Dep
         {
             CreateMap<DepartmentToCreateDto, Department>().ReverseMap();
             CreateMap<Department, DepartmentToDisplayDto>().ReverseMap();
+            CreateMap<DepartmentToUpdateDto, Department>().ReverseMap();
         }
     }
 }

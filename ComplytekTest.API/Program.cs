@@ -33,7 +33,6 @@ builder.Services.AddApiVersioning(options =>
 
     options.ApiVersionReader = new UrlSegmentApiVersionReader(); 
 });
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
@@ -53,7 +52,6 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred during database seeding.");
     }
 }
-
 
 app.UseHttpsRedirection();
 
