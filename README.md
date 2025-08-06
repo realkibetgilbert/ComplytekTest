@@ -25,7 +25,7 @@ A RESTful API built with **.NET 9** for managing employees, departments, and pro
 - Serilog for Structured Logging  
 - Clean Architecture Pattern
 - **API Versioning** – Implemented using **URL segment** (e.g., `/api/v1/...`)
-  **FluentValidation** – Used for validating  data requests
+- **FluentValidation** – Used for validating  data requests
 ---
 
 ##  Getting Started with Docker
