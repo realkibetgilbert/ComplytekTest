@@ -1,6 +1,6 @@
 ﻿using ComplytekTest.API.Application.Common;
 using ComplytekTest.API.Application.Common.Interfaces;
-using ComplytekTest.API.Application.DTOs.Employee;
+using ComplytekTest.API.Application.DTOs.EmployeeProjects;
 using ComplytekTest.API.Application.DTOs.Project;
 using ComplytekTest.API.Application.Features.Project.Interfaces;
 using ComplytekTest.API.Application.Mapping.Proj.Interfaces;
@@ -31,6 +31,34 @@ namespace ComplytekTest.API.Application.Features.Project.Services
             _logger = logger;
             _randomStringGenerator = randomStringGenerator;
         }
+
+        public async Task<ApiResponse<string>> AssignEmployeeToProjectAsync(long projectId, AssignEmployeeProjectDto assignEmployeeProjectDto)
+        {
+            try
+            {
+                var success = await _projectRepository.AssignEmployeeToProjectAsync(assignEmployeeProjectDto.EmployeeId, projectId, assignEmployeeProjectDto.Role);
+
+                if (!success)
+                {
+                    return ApiResponse<string>.Failure(
+                        message: "Project is already assigned to the employee.",
+                        errorCode: ApiErrorCode.Conflict
+                    );
+                }
+
+                return ApiResponse<string>.Success("Employee successfully assigned to project.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error assigning employee {EmployeeId} to project {ProjectId}", assignEmployeeProjectDto.EmployeeId, projectId);
+
+                return ApiResponse<string>.Failure(
+                    message: "An error occurred while assigning employee to project.",
+                    errorCode: ApiErrorCode.ServerError
+                );
+            }
+        }
+
         public async Task<ApiResponse<ProjectToDisplayDto>> CreateAsync(ProjectToCreateDto projectToCreateDto)
         {
             try
@@ -164,6 +192,63 @@ namespace ComplytekTest.API.Application.Features.Project.Services
                 );
             }
         }
+
+        public async Task<ApiResponse<List<ProjectToDisplayDto>>> GetProjectsByEmployeeIdAsync(long employeeId)
+        {
+            try
+            {
+                var projects = await _projectRepository.GetProjectsByEmployeeIdAsync(employeeId);
+
+                if (!projects.Any())
+                {
+                    return ApiResponse<List<ProjectToDisplayDto>>.Failure(
+                        message: "No projects found for the given employee.",
+                        errorCode: ApiErrorCode.NotFound
+                    );
+                }
+
+                var result = _projectMapper.ToDisplay(projects);
+
+                return ApiResponse<List<ProjectToDisplayDto>>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving projects for employee {EmployeeId}", employeeId);
+
+                return ApiResponse<List<ProjectToDisplayDto>>.Failure(
+                    message: "An error occurred while processing your request.",
+                    errorCode: ApiErrorCode.ServerError
+                );
+            }
+        }
+
+        public async Task<ApiResponse<string>> RemoveEmployeeFromProjectAsync(long projectId, RemoveEmployeeProjectDto removeEmployeeProjectDto)
+        {
+            try
+            {
+                var removed = await _projectRepository.RemoveEmployeeFromProjectAsync(removeEmployeeProjectDto.EmployeeId, projectId);
+
+                if (!removed)
+                {
+                    return ApiResponse<string>.Failure(
+                        message: "Employee is not assigned to this project.",
+                        errorCode: ApiErrorCode.NotFound
+                    );
+                }
+
+                return ApiResponse<string>.Success("Employee was successfully removed from the project.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error removing employee {EmployeeId} from project {ProjectId}", removeEmployeeProjectDto.EmployeeId, projectId);
+
+                return ApiResponse<string>.Failure(
+                    message: "An internal error occurred while removing the employee from the project.",
+                    errorCode: ApiErrorCode.ServerError
+                );
+            }
+        }
+
         public async Task<ApiResponse<ProjectToDisplayDto>?> UpdateAsync(long id, ProjectToUpdateDto projectToUpdateDto)
         {
             try
@@ -212,6 +297,7 @@ namespace ComplytekTest.API.Application.Features.Project.Services
                 );
             }
         }
+
 
     }
 }

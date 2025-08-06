@@ -1,4 +1,5 @@
 ﻿using ComplytekTest.API.Application.Common;
+using ComplytekTest.API.Application.DTOs.EmployeeProjects;
 using ComplytekTest.API.Application.DTOs.Project;
 using ComplytekTest.API.Application.Features.Project.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -82,7 +83,45 @@ namespace ComplytekTest.API.Controllers.Project.V1
                 _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
+        [HttpPost("{projectId:long}/assign-employee")]
+        public async Task<IActionResult> AssignEmployeeToProjectAsync(long projectId, [FromBody] AssignEmployeeProjectDto assignEmployeeProjectDto)
+        {
+            var response = await _projectService.AssignEmployeeToProjectAsync(projectId, assignEmployeeProjectDto);
 
+            return response.ErrorCode switch
+            {
+                ApiErrorCode.None => Ok(response),
+                ApiErrorCode.Conflict => BadRequest(response),
+                ApiErrorCode.NotFound => NotFound(response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response)
+            };
+        }
+
+        [HttpPost("{projectId:long}/remove-employee")]
+        public async Task<IActionResult> RemoveEmployeeFromProjectAsync(long projectId, [FromBody] RemoveEmployeeProjectDto removeEmployeeProjectDto)
+        {
+            var response = await _projectService.RemoveEmployeeFromProjectAsync(projectId, removeEmployeeProjectDto);
+
+            return response.ErrorCode switch
+            {
+                ApiErrorCode.None => Ok(response),
+                ApiErrorCode.NotFound => NotFound(response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response)
+            };
+        }
+
+        [HttpGet("by-employee/{employeeId:long}")]
+        public async Task<IActionResult> GetProjectsByEmployeeIdAsync(long employeeId)
+        {
+            var response = await _projectService.GetProjectsByEmployeeIdAsync(employeeId);
+
+            return response.ErrorCode switch
+            {
+                ApiErrorCode.None => Ok(response),
+                ApiErrorCode.NotFound => NotFound(response),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response)
+            };
+        }
 
     }
 }
