@@ -5,7 +5,7 @@ A RESTful API built with **.NET 9** for managing employees, departments, and pro
 
 ---
 
-## ✅ Features
+## Features
 
 - CRUD operations for Employees, Departments, and Projects  
 - Assign/Remove Employees to Projects with specific Roles  
