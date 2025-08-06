@@ -51,10 +51,12 @@ This will:
 - Apply EF Core migrations  
 - Seed initial data  
 
-###  Step 3: Access the API
+### 🌐 Step 3: Access the API
 
-- Swagger UI: [http://localhost:5192](http://localhost:5192)
+- Swagger UI: [http://localhost:5192](http://localhost:5192)  
 
+The API is fully documented in Swagger for easier testing and exploration.  
+Sample data (Departments & Employees) is automatically seeded during startup.
 ---
 
 ##  API Versioning
