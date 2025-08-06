@@ -68,7 +68,7 @@ This API uses **URL segment-based versioning**.
 To access employee endpoints:
 
 ```
-GET http://localhost:5192/api/v1/employees
+GET http://localhost:5192/api/v1/employee
 ```
 
 Ensure all requests are made using the `/api/v1/` prefix.
