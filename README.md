@@ -34,9 +34,11 @@ A RESTful API built with **.NET 9** for managing employees, departments, and pro
 
 ```bash
 git clone https://github.com/realkibetgilbert/ComplytekTest.git
-cd ComplytekTest
 ```
 
+```bash
+cd ComplytekTest
+```
 ###  Step 2: Run with Docker Compose
 
 ```bash
