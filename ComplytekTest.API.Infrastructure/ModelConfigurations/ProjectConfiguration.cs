@@ -1,6 +1,7 @@
 ﻿using ComplytekTest.API.Core.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ComplytekTest.API.Infrastructure.ModelConfigurations
 {
@@ -10,7 +11,7 @@ namespace ComplytekTest.API.Infrastructure.ModelConfigurations
         {
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Name).IsRequired();
-            builder.Property(p => p.ProjectCode).IsRequired();
+            builder.HasIndex(p => p.ProjectCode).IsUnique();
             builder.Property(p => p.Budget).HasPrecision(18, 2);
 
             builder.HasOne(p => p.Department)

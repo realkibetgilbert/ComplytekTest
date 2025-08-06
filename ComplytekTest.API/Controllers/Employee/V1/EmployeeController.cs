@@ -30,7 +30,6 @@ namespace ComplytekTest.API.Controllers.Employee.V1
             };
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetEmployeesAsync()
         {

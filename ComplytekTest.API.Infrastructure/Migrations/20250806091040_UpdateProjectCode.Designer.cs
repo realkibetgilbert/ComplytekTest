@@ -4,6 +4,7 @@ using ComplytekTest.API.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComplytekTest.API.Infrastructure.Migrations
 {
     [DbContext(typeof(ComplytekTestDbContext))]
-    partial class ComplytekTestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250806091040_UpdateProjectCode")]
+    partial class UpdateProjectCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +145,8 @@ namespace ComplytekTest.API.Infrastructure.Migrations
 
                     b.Property<string>("ProjectCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("datetime2");

@@ -78,14 +78,14 @@ namespace ComplytekTest.API.Controllers.Department.V1
         {
             var response = await _departmentService.DeleteAsync(id);
 
-            return response.ErrorCode switch
+            return response?.ErrorCode switch
             {
                 ApiErrorCode.None => Ok(response),
                 ApiErrorCode.NotFound => NotFound(response),
                 _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
-        [HttpGet("{departmentId:long}/total-budget")]
+        [HttpGet("{departmentId:long}/total-project-budget")]
         public async Task<IActionResult> GetTotalProjectBudgetAsync(long departmentId)
         {
             var response = await _departmentService.GetTotalProjectBudgetAsync(departmentId);

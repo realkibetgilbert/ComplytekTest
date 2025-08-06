@@ -14,9 +14,7 @@ namespace ComplytekTest.API.Core.Entities
         [Range(0, double.MaxValue)]
         public decimal Budget { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public required string ProjectCode { get; set; }
+        public string ProjectCode { get; set; } = string.Empty;
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedOn { get; set; } = DateTime.UtcNow;

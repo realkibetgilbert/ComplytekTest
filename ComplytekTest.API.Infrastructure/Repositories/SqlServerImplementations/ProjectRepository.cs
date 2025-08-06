@@ -1,6 +1,7 @@
 ﻿using ComplytekTest.API.Core.Entities;
 using ComplytekTest.API.Core.Interfaces;
 using ComplytekTest.API.Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
 
 namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
 {
@@ -16,47 +17,99 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
         {
             await _complytekTestDbContext.Projects.AddAsync(project);
             await _complytekTestDbContext.SaveChangesAsync();
+
             return project;
         }
 
-        public Task<Project> AddProjectWithCodeAsync(Project project, Func<Task<string>> generateCode)
+        public async Task<bool> AssignEmployeeToProjectAsync(long employeeId, long projectId, string role)
         {
-            throw new NotImplementedException();
+            var existingAssignment = await _complytekTestDbContext.EmployeeProjects.FirstOrDefaultAsync(ep => ep.EmployeeId == employeeId && ep.ProjectId == projectId);
+
+            if (existingAssignment != null) return false;
+
+            var employeeProject = new EmployeeProject
+            {
+                EmployeeId = employeeId,
+                ProjectId = projectId,
+                Role = role
+            };
+
+            await _complytekTestDbContext.EmployeeProjects.AddAsync(employeeProject);
+            await _complytekTestDbContext.SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<bool> AssignEmployeeToProjectAsync(long employeeId, long projectId, string role)
+        public async Task<Project?> DeleteAsync(long id)
         {
-            throw new NotImplementedException();
+            var existingProject = await _complytekTestDbContext.Projects.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (existingProject == null) return null;
+
+            _complytekTestDbContext.Projects.Remove(existingProject);
+            await _complytekTestDbContext.SaveChangesAsync();
+
+            return existingProject;
         }
 
-        public Task<Project?> DeleteAsync(long id)
+        public async Task<IEnumerable<Project>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _complytekTestDbContext.Projects
+             .Include(p => p.Department)
+             .Include(p => p.EmployeeProjects)
+             .ThenInclude(ep => ep.Employee)
+             .AsNoTracking()
+             .ToListAsync();
         }
 
-        public Task<IEnumerable<Project>> GetAllAsync()
+        public async Task<Project?> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _complytekTestDbContext.Projects
+                .Include(p => p.Department)
+                .Include(p => p.EmployeeProjects)
+                .ThenInclude(ep => ep.Employee)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<Project?> GetByIdAsync(long id)
+        public async Task<IEnumerable<Project>> GetProjectsByEmployeeIdAsync(long employeeId)
         {
-            throw new NotImplementedException();
+            return await _complytekTestDbContext.Projects
+            .Include(p => p.Department)
+            .Include(p => p.EmployeeProjects)
+            .ThenInclude(ep => ep.Employee)
+            .Where(p => p.EmployeeProjects.Any(ep => ep.EmployeeId == employeeId))
+            .AsNoTracking()
+            .ToListAsync();
         }
 
-        public Task<IEnumerable<Project>> GetProjectsByEmployeeAsync(long employeeId)
+        public async Task<bool> RemoveEmployeeFromProjectAsync(long employeeId, long projectId)
         {
-            throw new NotImplementedException();
+            var employeeProject = await _complytekTestDbContext.EmployeeProjects.FirstOrDefaultAsync(ep => ep.EmployeeId == employeeId && ep.ProjectId == projectId);
+
+            if (employeeProject == null) return false;
+
+            _complytekTestDbContext.EmployeeProjects.Remove(employeeProject);
+            await _complytekTestDbContext.SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<bool> RemoveEmployeeFromProjectAsync(long employeeId, long projectId)
+        public async Task<Project?> UpdateAsync(Project project)
         {
-            throw new NotImplementedException();
-        }
+            var existingProject = await _complytekTestDbContext.Projects.FirstOrDefaultAsync(p => p.Id == project.Id);
 
-        public Task<Project> UpdateAsync(Project project)
-        {
-            throw new NotImplementedException();
+            if (existingProject != null)
+            {
+                existingProject.Name = project.Name;
+                existingProject.Budget = project.Budget;
+                existingProject.ProjectCode = project.ProjectCode;
+                existingProject.DepartmentId = project.DepartmentId;
+                existingProject.UpdatedOn = DateTime.UtcNow;
+
+                await _complytekTestDbContext.SaveChangesAsync();
+            }
+
+            return existingProject!;
         }
     }
 }

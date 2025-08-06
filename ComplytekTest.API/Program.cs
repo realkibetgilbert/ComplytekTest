@@ -1,6 +1,4 @@
 using ComplytekTest.API.Application;
-using ComplytekTest.API.Application.Mapping;
-using ComplytekTest.API.Application.Mapping.Dep;
 using ComplytekTest.API.Extensions;
 using ComplytekTest.API.Infrastructure;
 using ComplytekTest.API.Infrastructure.Persistance;
@@ -8,7 +6,6 @@ using ComplytekTest.API.Infrastructure.Seed;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

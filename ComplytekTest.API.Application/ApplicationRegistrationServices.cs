@@ -1,17 +1,24 @@
 ﻿using ComplytekTest.API.Application.DTOs.Department;
 using ComplytekTest.API.Application.DTOs.Employee;
+using ComplytekTest.API.Application.DTOs.Project;
 using ComplytekTest.API.Application.Features.Department.Interfaces;
 using ComplytekTest.API.Application.Features.Department.Services;
 using ComplytekTest.API.Application.Features.Employee.Interfaces;
 using ComplytekTest.API.Application.Features.Employee.Services;
+using ComplytekTest.API.Application.Features.Project.Interfaces;
+using ComplytekTest.API.Application.Features.Project.Services;
 using ComplytekTest.API.Application.Mapping.Dep;
 using ComplytekTest.API.Application.Mapping.Dep.Interfaces;
 using ComplytekTest.API.Application.Mapping.Dep.Services;
 using ComplytekTest.API.Application.Mapping.Emp;
 using ComplytekTest.API.Application.Mapping.Emp.Interfaces;
 using ComplytekTest.API.Application.Mapping.Emp.Services;
+using ComplytekTest.API.Application.Mapping.Proj;
+using ComplytekTest.API.Application.Mapping.Proj.Interfaces;
+using ComplytekTest.API.Application.Mapping.Proj.Services;
 using ComplytekTest.API.Application.Validators.Department;
 using ComplytekTest.API.Application.Validators.Employee;
+using ComplytekTest.API.Application.Validators.Project;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,6 +41,12 @@ namespace ComplytekTest.API.Application
             services.AddScoped<IValidator<EmployeeToUpdateDto>, UpdateEmployeeDtoValidator>();
             services.AddAutoMapper(typeof(EmployeeMappingProfile));
 
+
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddTransient<IProjectMapper, ProjectMapper>();
+            services.AddScoped<IValidator<ProjectToCreateDto>, CreateProjectDtoValidator>();
+            services.AddScoped<IValidator<ProjectToUpdateDto>, UpdateProjectDtoValidator>();
+            services.AddAutoMapper(typeof(ProjectMappingProfile));
 
             return services;
         }

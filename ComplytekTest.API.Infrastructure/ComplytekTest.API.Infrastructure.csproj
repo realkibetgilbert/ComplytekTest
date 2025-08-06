@@ -9,9 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ComplytekTest.API.Application\ComplytekTest.API.Application.csproj" />
     <ProjectReference Include="..\ComplytekTest.API.Core\ComplytekTest.API.Core.csproj" />
   </ItemGroup>
 
