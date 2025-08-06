@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ComplytekTest.API.Application\ComplytekTest.API.Application.csproj" />
+    <ProjectReference Include="..\ComplytekTest.API.Infrastructure\ComplytekTest.API.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
