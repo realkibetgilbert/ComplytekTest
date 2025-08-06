@@ -1,7 +1,7 @@
 
 # Complytek Test API – Employee, Department & Project Management
 
-A RESTful API built with **.NET 9** for managing employees, departments, and projects in a company.
+A RESTful API built with **.NET 9** for managing employees, departments, and projects
 
 ---
 
@@ -24,7 +24,8 @@ A RESTful API built with **.NET 9** for managing employees, departments, and pro
 - Docker & Docker Compose  
 - Serilog for Structured Logging  
 - Clean Architecture Pattern
-
+- **API Versioning** – Implemented using **URL segment** (e.g., `/api/v1/...`)
+  **FluentValidation** – Used for validating  data requests
 ---
 
 ##  Getting Started with Docker
@@ -72,31 +73,6 @@ GET http://localhost:5192/api/v1/employee
 ```
 
 Ensure all requests are made using the `/api/v1/` prefix.
-
----
-
-##  Local Development
-
-###  Step 1: Update Connection String
-
-Update the connection string in:
-
-```bash
-ComplytekTest.API/appsettings.json
-```
-
-###  Step 2: Apply EF Core Migrations
-
-```bash
-dotnet ef database update
-```
-
-###  Step 3: Run the API Locally
-
-```bash
-dotnet run --project ComplytekTest.API
-```
-
 ---
 ##  Postman Collection
 
@@ -168,7 +144,6 @@ Now you can test the following endpoints grouped by category:
 - Always make sure the API and database containers are running (`docker compose up`).
 - If the API isn't responding, check if the correct port is open (default is `5192`).
 - Some endpoints require valid existing `DepartmentId` or `ProjectId` to test properly.
-
 ---
 
 ##  Done
