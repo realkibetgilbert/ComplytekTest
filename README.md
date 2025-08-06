@@ -98,28 +98,28 @@ dotnet run --project ComplytekTest.API
 ```
 
 ---
-## 📫 Postman Collection
+##  Postman Collection
 
-We've included a complete Postman collection for testing all the available API endpoints (Employee, Department, and Project).
+I Have included a complete Postman collection for testing all the available API endpoints (Employee, Department, and Project).
 
 ### 🔗 Download Collection
 
-[👉 Download ComplytekTestApiCollection.postman_collection.json](./ComplytekTest.API/PostmanCollection/ComplytekTestApiCollection.postman_collection.json)
+[ Download ComplytekTestApiCollection.postman_collection.json](./ComplytekTest.API/PostmanCollection/ComplytekTestApiCollection.postman_collection.json)
 
-> _Place this file in the `ComplytekTest.API/PostmanCollection/` folder, or download it from the GitHub repo if hosted._
+
 
 ---
 
-### 🧪 Step-by-Step: Testing with Postman
+###  Step-by-Step: Testing with Postman
 
-#### ✅ Step 1: Import the Collection
+####  Step 1: Import the Collection
 
 1. Open **Postman**.
 2. Click on `Import` (top-left corner).
 3. Select the file `ComplytekTestApiCollection.postman_collection.json`.
 4. The collection will now appear in your Postman sidebar.
 
-#### ✅ Step 2: Set Up Environment Variables
+####  Step 2: Set Up Environment Variables
 
 Before testing, define environment variables for smooth execution:
 
@@ -130,9 +130,9 @@ Before testing, define environment variables for smooth execution:
     - `API_VERSION`: `1`
 4. Save the environment and **select it from the top-right dropdown** in Postman.
 
-> 🔒 You can adjust `BASE_URL` if you're running the API under a different port.
+>  You can adjust `BASE_URL` if you're running the API under a different port.
 
-#### ✅ Step 3: Use the Endpoints
+####  Step 3: Use the Endpoints
 
 Now you can test the following endpoints grouped by category:
 
@@ -163,7 +163,7 @@ Now you can test the following endpoints grouped by category:
 
 ---
 
-### 🛠 Common Tips
+###  Common Tips
 
 - Always make sure the API and database containers are running (`docker compose up`).
 - If the API isn't responding, check if the correct port is open (default is `5192`).
@@ -171,7 +171,7 @@ Now you can test the following endpoints grouped by category:
 
 ---
 
-## ✅ Done!
+##  Done
 
 You're now ready to test and interact with your API endpoints through Postman.
 
