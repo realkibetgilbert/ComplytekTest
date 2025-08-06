@@ -6,7 +6,7 @@ services:
     container_name: complytektest-sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Technology###324"
+      SA_PASSWORD: "@@@@Technology###324"
       MSSQL_PID: "Express"
     ports:
       - "1433:1433"
@@ -30,7 +30,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__DefaultConnection: "Data Source=sqlserver,1433;Initial Catalog=ComplytekTestDb;User ID=sa;Password=Technology###324;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true"
+      ConnectionStrings__ComplytekTestConnection: "Data Source=sqlserver,1433;Initial Catalog=ComplytekTestDb;User ID=sa;Password=@@@@Technology###324;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=true"
       RandomStringApiUrl: "https://codito.io/free-random-code-generator/api/generate"
     ports:
       - "5192:8080"

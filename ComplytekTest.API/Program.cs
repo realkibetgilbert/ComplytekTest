@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,35 +15,38 @@ builder.ConfigureSerilog();
 
 builder.Services.AddControllers();
 
-// Add these lines for Swagger
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
-        Title = "ComplytekTest  API",
+        Title = "ComplytekTest API",
         Description = """
             This RESTful API allows management of employees, departments, and projects in a company.
 
-             CRUD operations for:
+            CRUD operations for:
             - Employees
             - Departments
             - Projects
 
-             Project-specific features:
+            Project-specific features:
             - Assign or remove employees from projects with roles
             - View all projects assigned to an employee
             - View total budget of projects handled by a department
 
-             Project creation includes unique project code generation via an external Random Code Generator API.
+            Project creation includes unique project code generation via an external Random Code Generator API.
             This process ensures transactional consistency by using database transactions.
 
-             Built with .NET 9 and SQL Server (EF Core code-first), deployable with Docker Compose.
+            Built with .NET 9 and SQL Server (EF Core code-first), deployable with Docker Compose.
         """
     });
-});
 
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 builder.Services.AddDbContext<ComplytekTestDbContext>(options =>
     options.UseSqlServer(
@@ -65,13 +69,12 @@ builder.Services.AddApiVersioning(options =>
 
 var app = builder.Build();
 
-// Enable Swagger UI at root
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Complytek Company Management API v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Complytek Test API v1");
     c.DocumentTitle = "ComplytekTest API Documentation";
-    c.RoutePrefix = string.Empty; 
+    c.RoutePrefix = string.Empty;
 });
 
 using (var scope = app.Services.CreateScope())
@@ -106,11 +109,10 @@ using (var scope = app.Services.CreateScope())
             }
 
             await Task.Delay(delay);
-            delay *= 2; 
+            delay *= 2;
         }
     }
 }
-
 
 app.UseHttpsRedirection();
 

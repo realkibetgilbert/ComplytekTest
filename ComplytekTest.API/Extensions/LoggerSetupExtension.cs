@@ -8,7 +8,6 @@ namespace ComplytekTest.API.Extensions
         {
             builder.Host.UseSerilog();
 
-            // Detect if running in Docker
             var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
             var loggerConfig = new LoggerConfiguration()

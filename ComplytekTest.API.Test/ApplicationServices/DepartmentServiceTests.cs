@@ -36,8 +36,6 @@ namespace ComplytekTest.API.Test.ServiceTests
             );
         }
 
-
-
         [Fact]
         public async Task CreateAsync_Exception_ReturnsServerError()
         {

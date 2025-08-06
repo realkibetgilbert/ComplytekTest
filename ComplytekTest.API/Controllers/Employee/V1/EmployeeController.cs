@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ComplytekTest.API.Controllers.Employee.V1
 {
-    
+
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -103,7 +103,7 @@ namespace ComplytekTest.API.Controllers.Employee.V1
         {
             var response = await _employeeService.DeleteAsync(id);
 
-            return response.ErrorCode switch
+            return response?.ErrorCode switch
             {
                 ApiErrorCode.None => Ok(response),
                 ApiErrorCode.NotFound => NotFound(response),
