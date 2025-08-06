@@ -18,15 +18,16 @@ A RESTful API built with **.NET 9** for managing employees, departments, and pro
 
 ##  Tech Stack
 
-- ASP.NET Core Web API (.NET 9)  
-- Entity Framework Core (EF Core)  
-- SQL Server  
-- Docker & Docker Compose  
-- Serilog for Structured Logging  
-- Clean Architecture Pattern
-- **API Versioning** – Implemented using **URL segment** (e.g., `/api/v1/...`)
-- **FluentValidation** – Used for validating  data requests
----
+- **ASP.NET Core Web API (.NET 9)** – Backend framework
+- **Entity Framework Core (EF Core)** – Database access with SQL Server
+- **SQL Server** – Relational database
+- **Docker & Docker Compose** – Containerized development and deployment
+- **Serilog** – Structured logging
+- **Clean Architecture Pattern** – Layered, maintainable project structure
+- **API Versioning** – Implemented via URL segments (e.g., `/api/v1/...`)
+- **FluentValidation** – For validating incoming request models
+- **Standard API Response Wrapper** – Unified response format for all success and error results
+
 
 ##  Getting Started with Docker
 
