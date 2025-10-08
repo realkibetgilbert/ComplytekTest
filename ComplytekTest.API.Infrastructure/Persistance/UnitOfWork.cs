@@ -1,4 +1,4 @@
-﻿using ComplytekTest.API.Application.Common.Interfaces;
+﻿using ComplytekTest.API.Application.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;

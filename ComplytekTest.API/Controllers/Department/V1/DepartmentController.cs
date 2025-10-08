@@ -1,4 +1,5 @@
-﻿using ComplytekTest.API.Application.Common;
+﻿using ComplytekTest.API.Application.Common.Pagination;
+using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.Department;
 using ComplytekTest.API.Application.Features.Department.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -40,9 +41,11 @@ namespace ComplytekTest.API.Controllers.Department.V1
         /// </summary>
         /// <returns>API response with list of departments.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetDepartmentsAsync()
+        public async Task<IActionResult> GetDepartmentsAsync([FromQuery] PaginationFilter filter)
         {
-            var response = await _departmentService.GetAllAsync();
+            var route = Request?.Path.Value ?? string.Empty; 
+
+            var response = await _departmentService.GetAllAsync(filter, route);
 
             return response.ErrorCode switch
             {
@@ -87,7 +90,7 @@ namespace ComplytekTest.API.Controllers.Department.V1
                 ApiErrorCode.ValidationError => BadRequest(response),
                 ApiErrorCode.NotFound => NotFound(response),
                 ApiErrorCode.ServerError => StatusCode(StatusCodes.Status500InternalServerError, response),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, response) 
+                _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
 
@@ -126,7 +129,6 @@ namespace ComplytekTest.API.Controllers.Department.V1
                 _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
-
 
     }
 }

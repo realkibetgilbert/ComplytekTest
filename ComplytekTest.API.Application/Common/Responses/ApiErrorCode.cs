@@ -1,4 +1,4 @@
-﻿namespace ComplytekTest.API.Application.Common
+﻿namespace ComplytekTest.API.Application.Common.Responses
 {
     public enum ApiErrorCode
     {

@@ -1,4 +1,4 @@
-﻿namespace ComplytekTest.API.Application.Common
+﻿namespace ComplytekTest.API.Application.Common.Responses
 {
     public class ApiResponse<T>
     {
@@ -35,6 +35,5 @@
                 ErrorCode = errorCode
             };
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using ComplytekTest.API.Application.Services.External;
+﻿using ComplytekTest.API.Application.Interfaces;
 using ComplytekTest.API.Infrastructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

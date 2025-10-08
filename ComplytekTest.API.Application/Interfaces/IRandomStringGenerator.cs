@@ -1,4 +1,4 @@
-﻿namespace ComplytekTest.API.Application.Services.External
+﻿namespace ComplytekTest.API.Application.Interfaces
 {
     public interface IRandomStringGenerator
     {

@@ -1,4 +1,4 @@
-using ComplytekTest.API.Application.Common;
+using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.Employee;
 using ComplytekTest.API.Application.Features.Employee.Interfaces;
 using ComplytekTest.API.Application.Features.Employee.Services;

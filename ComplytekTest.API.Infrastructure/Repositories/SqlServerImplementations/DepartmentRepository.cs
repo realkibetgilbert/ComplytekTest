@@ -32,12 +32,14 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
             return department;
         }
 
-        public async Task<IEnumerable<Department>> GetAllAsync()
+        public async Task<IEnumerable<Department>> GetAllAsync(int pageNumber, int pageSize)
         {
             return await _compltekTestDbContext.Departments
               .Include(d => d.Employees)
               .Include(d => d.Projects)
               .AsNoTracking()
+              .Skip((pageNumber - 1) * pageSize)
+              .Take(pageSize)
               .ToListAsync();
         }
 
@@ -71,5 +73,11 @@ namespace ComplytekTest.API.Infrastructure.Repositories.SqlServerImplementations
 
             return departmentToUpdate!;
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await _compltekTestDbContext.Departments.CountAsync();
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using ComplytekTest.API.Application.Common;
+﻿using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.Employee;
 
 namespace ComplytekTest.API.Application.Features.Employee.Interfaces

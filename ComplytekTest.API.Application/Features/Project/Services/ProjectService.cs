@@ -1,10 +1,9 @@
-﻿using ComplytekTest.API.Application.Common;
-using ComplytekTest.API.Application.Common.Interfaces;
+﻿using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.EmployeeProjects;
 using ComplytekTest.API.Application.DTOs.Project;
 using ComplytekTest.API.Application.Features.Project.Interfaces;
+using ComplytekTest.API.Application.Interfaces;
 using ComplytekTest.API.Application.Mapping.Proj.Interfaces;
-using ComplytekTest.API.Application.Services.External;
 using ComplytekTest.API.Core.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.Logging;

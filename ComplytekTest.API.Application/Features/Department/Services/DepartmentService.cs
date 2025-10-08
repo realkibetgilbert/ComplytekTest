@@ -1,6 +1,8 @@
-﻿using ComplytekTest.API.Application.Common;
+﻿using ComplytekTest.API.Application.Common.Pagination;
+using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.Department;
 using ComplytekTest.API.Application.Features.Department.Interfaces;
+using ComplytekTest.API.Application.Interfaces;
 using ComplytekTest.API.Application.Mapping.Dep.Interfaces;
 using ComplytekTest.API.Core.Interfaces;
 using FluentValidation;
@@ -15,15 +17,18 @@ namespace ComplytekTest.API.Application.Features.Department.Services
         private readonly IValidator<DepartmentToCreateDto> _createDepartmentValidator;
         private readonly IValidator<DepartmentToUpdateDto> _updateDepartmentValidator;
         private readonly ILogger<DepartmentService> _logger;
+        private readonly IUriService _uriService;
 
-        public DepartmentService(IDepartmentMapper departmentMapper, IDepartmentRepository departmentRepository, IValidator<DepartmentToCreateDto> createDepartmentValidator, IValidator<DepartmentToUpdateDto> updateDepartmentValidator, ILogger<DepartmentService> logger)
+        public DepartmentService(IDepartmentMapper departmentMapper, IDepartmentRepository departmentRepository, IValidator<DepartmentToCreateDto> createDepartmentValidator, IValidator<DepartmentToUpdateDto> updateDepartmentValidator, ILogger<DepartmentService> logger, IUriService uriService)
         {
             _departmentMapper = departmentMapper;
             _departmentRepository = departmentRepository;
             _createDepartmentValidator = createDepartmentValidator;
             _updateDepartmentValidator = updateDepartmentValidator;
             _logger = logger;
+            _uriService = uriService;
         }
+
         public async Task<ApiResponse<DepartmentToDisplayDto>> CreateAsync(DepartmentToCreateDto departmentToCreateDto)
         {
             try
@@ -37,7 +42,8 @@ namespace ComplytekTest.API.Application.Features.Department.Services
                     var errorMessages = validationResult.Errors
                         .Select(e => e.ErrorMessage)
                         .ToArray();
-
+                    DateTime dateTime = DateTime.Now;
+                    
                     return ApiResponse<DepartmentToDisplayDto>.Failure(
                         message: "Validation failed. Please check your input.",
                         errors: errorMessages,
@@ -90,35 +96,73 @@ namespace ComplytekTest.API.Application.Features.Department.Services
             }
         }
 
-
-        public async Task<ApiResponse<List<DepartmentToDisplayDto>>> GetAllAsync()
+        public async Task<PagedResponse<List<DepartmentToDisplayDto>>> GetAllAsync(PaginationFilter filter, string route)
         {
             try
             {
-                var departments = await _departmentRepository.GetAllAsync();
+                var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+                var departments = await _departmentRepository
+                    .GetAllAsync(validFilter.PageNumber, validFilter.PageSize);
+
+                var totalRecords = await _departmentRepository.CountAsync();
+
                 var displayDtos = _departmentMapper.ToDisplay(departments);
 
-                if (displayDtos == null || !displayDtos.Any())
+                if (!displayDtos.Any())
                 {
-                    return ApiResponse<List<DepartmentToDisplayDto>>.Failure(
-                        message: "No departments found.",
-                        errorCode: ApiErrorCode.NotFound
-                    );
+                    return new PagedResponse<List<DepartmentToDisplayDto>>(
+                        data: displayDtos,
+                        pageNumber: validFilter.PageNumber,
+                        pageSize: validFilter.PageSize,
+                        totalRecords: 0,
+                        totalPages: 0,
+                        firstPage: null,
+                        lastPage: null,
+                        nextPage: null,
+                        previousPage: null
+                    )
+                    {
+                        IsSuccess = false,
+                        Title = "Error",
+                        Message = "No departments found.",
+                        ErrorCode = ApiErrorCode.NotFound
+                    };
                 }
 
-                return ApiResponse<List<DepartmentToDisplayDto>>.Success(displayDtos);
+                var pagedResponse = PaginationHelper.CreatePagedResponse(
+                    displayDtos,
+                    validFilter,
+                    totalRecords,
+                    _uriService,
+                    route
+                );
+
+                return pagedResponse;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while fetching departments.");
 
-                return ApiResponse<List<DepartmentToDisplayDto>>.Failure(
-                    message: "An unexpected error occurred.",
-                    errorCode: ApiErrorCode.ServerError
-                );
+                return new PagedResponse<List<DepartmentToDisplayDto>>(
+                    data: null,
+                    pageNumber: filter.PageNumber,
+                    pageSize: filter.PageSize,
+                    totalRecords: 0,
+                    totalPages: 0,
+                    firstPage: null,
+                    lastPage: null,
+                    nextPage: null,
+                    previousPage: null
+                )
+                {
+                    IsSuccess = false,
+                    Title = "Error",
+                    ErrorCode = ApiErrorCode.ServerError,
+                    Message = "An unexpected error occurred."
+                };
             }
         }
-
 
         public async Task<ApiResponse<DepartmentToDisplayDto>> GetByIdAsync(long id)
         {
@@ -178,7 +222,6 @@ namespace ComplytekTest.API.Application.Features.Department.Services
             }
         }
 
-
         public async Task<ApiResponse<DepartmentToDisplayDto>?> UpdateAsync(long id, DepartmentToUpdateDto departmentToUpdateDto)
         {
             try
@@ -227,6 +270,5 @@ namespace ComplytekTest.API.Application.Features.Department.Services
                 );
             }
         }
-
     }
 }

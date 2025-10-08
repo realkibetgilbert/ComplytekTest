@@ -1,4 +1,4 @@
-﻿namespace ComplytekTest.API.Application.Common.Interfaces
+﻿namespace ComplytekTest.API.Application.Interfaces
 {
     public interface IUnitOfWork
     {

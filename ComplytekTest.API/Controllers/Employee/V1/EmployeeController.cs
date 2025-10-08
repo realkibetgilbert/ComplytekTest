@@ -1,4 +1,4 @@
-﻿using ComplytekTest.API.Application.Common;
+﻿using ComplytekTest.API.Application.Common.Responses;
 using ComplytekTest.API.Application.DTOs.Employee;
 using ComplytekTest.API.Application.Features.Employee.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -91,7 +91,6 @@ namespace ComplytekTest.API.Controllers.Employee.V1
                 _ => StatusCode(StatusCodes.Status500InternalServerError, response)
             };
         }
-
 
         /// <summary>
         /// Deletes an employee by ID.
